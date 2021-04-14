@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-
+import Navbar from "./Navbar";
 //#region
 const LeftbarWrapper = styled.div`
   width: 100%;
@@ -109,12 +109,21 @@ const Nav = styled.nav`
 
 export interface LeftbarProps {}
 
-const Leftbar: React.SFC<LeftbarProps> = () => {
+let photos: string[] = [];
+
+let users: string[] = [];
+
+fetch("https://jsonplaceholder.typicode.com/users")
+  .then((response) => response.json())
+  .then((json) => json.map((item) => users.push(item)));
+
+const Leftbar: React.SFC<LeftbarProps> = ({ icon, handleIconLink }) => {
   return (
     <LeftbarWrapper className="leftbar-wrapper">
       <UserCard className="user-card">
         <UserInfo className="user-info">
           <img src="./icons/navbarmenu-avatar.jpg" alt="xd" />
+          {/* <img src= alt="xd" /> */}
           <h3>Humberta Swift</h3>
           <p>Job title - Company</p>
         </UserInfo>
@@ -137,19 +146,28 @@ const Leftbar: React.SFC<LeftbarProps> = () => {
       </UserCard>
       <Nav>
         <ul>
-          <NavLink to="/publications">
+          <NavLink
+            to="/publications"
+            onClick={() => handleIconLink("publications.png", "Publications")}
+          >
             <li>
               <img src="./icons/publications.png" alt="" />
               <p>Publications</p>
             </li>
           </NavLink>
-          <NavLink to="ecosystem">
+          <NavLink
+            to="ecosystem"
+            onClick={() => handleIconLink("ecosystem.png", "Ecosystem")}
+          >
             <li>
               <img src="./icons/ecosystem.png" alt="" />
               <p>Ecosystem</p>
             </li>
           </NavLink>
-          <NavLink to="entities">
+          <NavLink
+            to="entities"
+            onClick={() => handleIconLink("entities2.png", "Entities")}
+          >
             <li>
               <img src="./icons/entities2.png" alt="" />
               <p>Entities</p>

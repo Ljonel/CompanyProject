@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { Route, Switch } from "react-router-dom";
+
 import NavbarMenu from "./NavbarMenu";
 import useDropdown from "react-dropdown-hook";
 //#region styles
@@ -86,7 +88,7 @@ const HeaderIcons = styled.div`
 `;
 //#endregion
 
-const Navbar = () => {
+const Navbar = ({ icon, handleIconLink }) => {
   const [
     wrapperRef,
     dropdownOpen,
@@ -107,11 +109,11 @@ const Navbar = () => {
           <img
             onClick={toggleDropdown}
             className="house-icon"
-            src={"./icons/house2.png"}
+            src={"./icons/" + icon.url} // actually clicked icon: ;
             alt="house2"
           />
-          <p>Home</p>
-          {dropdownOpen && <NavbarMenu />}
+          <p>{icon.name}</p> {/*actually clicked title*/}
+          {dropdownOpen && <NavbarMenu handleIconLink={handleIconLink} />}
         </div>
         <img
           onClick={closeDropdown}

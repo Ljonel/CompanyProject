@@ -113,17 +113,23 @@ const headerMenuOptions: HeaderMenuOptions[] = [
   },
 ];
 
-const options = headerMenuOptions.map((item) => {
-  return (
-    <NavLink to={item.path} exact={item.exact ? item.exact : false}>
-      <li key={item.id}>
-        <img src={`./icons/${item.img}`} alt={item.img} />
-        <p> {item.name}</p>
-      </li>
-    </NavLink>
-  );
-});
-const NavbarMenu = () => {
+const NavbarMenu = ({ handleIconLink }) => {
+  const options = headerMenuOptions.map((item) => {
+    return (
+      <NavLink
+        to={item.path}
+        key={item.id}
+        onClick={() => handleIconLink(item.img, item.name)}
+        exact={item.exact ? item.exact : false}
+      >
+        <li>
+          <img src={`./icons/${item.img}`} alt={item.img} />
+          <p> {item.name}</p>
+        </li>
+      </NavLink>
+    );
+  });
+
   return (
     <Menu>
       <MenuFilter>
