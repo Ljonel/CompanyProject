@@ -1,7 +1,12 @@
 import * as React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import Navbar from "./Navbar";
+
+import { useSelector } from "react-redux";
+import { IState } from "../../reducers";
+import { IUsersReducer } from "../../reducers/usersReducer";
+import { IPhotosReducer } from "../../reducers/photosReducer";
+
 //#region
 const LeftbarWrapper = styled.div`
   width: 100%;
@@ -109,23 +114,26 @@ const Nav = styled.nav`
 
 export interface LeftbarProps {}
 
-let photos: string[] = [];
-
-let users: string[] = [];
-
-fetch("https://jsonplaceholder.typicode.com/users")
-  .then((response) => response.json())
-  .then((json) => json.map((item) => users.push(item)));
+// fetch("https://jsonplaceholder.typicode.com/users")
+//   .then((response) => response.json())
+//   .then((json) => json.map((item) => users.push(item)));
 
 const Leftbar: React.SFC<LeftbarProps> = ({ icon, handleIconLink }) => {
+  const { usersList } = useSelector<IState, IUsersReducer>((globalState) => ({
+    ...globalState.users,
+  }));
+  const { photosList } = useSelector<IState, IPhotosReducer>((global) => ({
+    ...global.photos,
+  }));
+
   return (
     <LeftbarWrapper className="leftbar-wrapper">
       <UserCard className="user-card">
         <UserInfo className="user-info">
-          <img src="./icons/navbarmenu-avatar.jpg" alt="xd" />
-          {/* <img src= alt="xd" /> */}
-          <h3>Humberta Swift</h3>
-          <p>Job title - Company</p>
+          {/* <img src="./icons/navbarmenu-avatar.jpg" alt="xd" /> */}
+          <img src={photosList?.[0]?.url} alt="xd" />
+          <h3>{usersList?.[0]?.name}</h3>
+          <p>{usersList?.[0]?.company.name}</p>
         </UserInfo>
         <UserBody className="user-body">
           <hr />

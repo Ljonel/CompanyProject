@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Route, Switch } from "react-router-dom";
-
+import { NavLink } from "react-router-dom";
 import NavbarMenu from "./NavbarMenu";
 import useDropdown from "react-dropdown-hook";
 //#region styles
@@ -37,6 +36,9 @@ const HeaderHome = styled.div`
       margin-right: 5%;
       cursor: pointer;
     }
+  }
+  .logo-link {
+    margin-right: 5%;
   }
 `;
 const HeaderSearch = styled.div`
@@ -99,12 +101,14 @@ const Navbar = ({ icon, handleIconLink }) => {
   return (
     <Header>
       <HeaderHome>
-        <img
-          style={{ borderRadius: "50%" }}
-          className="logo"
-          src="./icons/logoLY.jpg"
-          alt=""
-        />
+        <NavLink to="/" className="logo-link">
+          <img
+            style={{ borderRadius: "50%" }}
+            className="logo"
+            src="./icons/logoLY.jpg"
+            alt=""
+          />
+        </NavLink>
         <div ref={wrapperRef} className="home-wrapper">
           <img
             onClick={toggleDropdown}

@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-
+import { useSelector } from "react-redux";
+import { IState } from "../../reducers";
+import { IUsersReducer } from "../../reducers/usersReducer";
+import { IPhotosReducer } from "../../reducers/photosReducer";
 //#region styles
 const Menu = styled.div`
   background: #fff;
@@ -130,6 +133,14 @@ const NavbarMenu = ({ handleIconLink }) => {
     );
   });
 
+  const { usersList } = useSelector<IState, IUsersReducer>((globalState) => ({
+    ...globalState.users,
+  }));
+
+  const { photosList } = useSelector<IState, IPhotosReducer>((global) => ({
+    ...global.photos,
+  }));
+
   return (
     <Menu>
       <MenuFilter>
@@ -166,17 +177,18 @@ const NavbarMenu = ({ handleIconLink }) => {
         <span>Account</span>
         <div className="menu-account">
           <ul>
-            <li>
+            <NavLink to="/user">
               <img
                 className="navbarmenu-avatar-photo"
-                src="./icons/navbarmenu-avatar.jpg"
+                // src="./icons/navbarmenu-avatar.jpg"
+                src={photosList?.[0]?.url}
                 alt="avatar"
               />
               <div className="navbarmenu-avatar">
-                <p>Jeanne-Marie de la cli...</p>
+                <p>{usersList?.[0]?.name}</p>
                 <a href="index.html">See profile</a>
               </div>
-            </li>
+            </NavLink>
             <li>
               <img src="./icons/privacy.png" alt="" />
               <p>Privacy</p>
