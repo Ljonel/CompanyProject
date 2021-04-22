@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -124,6 +124,7 @@ const NavbarMenu = ({ handleIconLink }) => {
         key={item.id}
         onClick={() => handleIconLink(item.img, item.name)}
         exact={item.exact ? item.exact : false}
+        name={item.name}
       >
         <li>
           <img src={`./icons/${item.img}`} alt={item.img} />
@@ -141,14 +142,32 @@ const NavbarMenu = ({ handleIconLink }) => {
     ...global.photos,
   }));
 
+  const [inputText, setInputText] = useState<string>("");
+  const inputHandle = (e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+    setInputText(text);
+    console.log(text);
+  };
+
   return (
     <Menu>
       <MenuFilter>
-        <input type="text" name="navbarMenuFilter" placeholder="Filter..." />
+        <input
+          type="text"
+          value={inputText}
+          onChange={inputHandle}
+          name="navbarMenuFilter"
+          placeholder="Filter..."
+        />
       </MenuFilter>
       <MenuContainer>
         <span>Platform</span>
-        <ul>{options}</ul>
+        {/* <ul>{options}</ul> */}
+        {options.map((item) => {
+          if (item.props.name.toLowerCase().includes(inputText.toLowerCase())) {
+            return <ul>{item}</ul>;
+          }
+        })}
 
         <span>Workspaces</span>
         <ul>
