@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import NavbarMenu from "./NavbarMenu";
@@ -86,6 +86,45 @@ const HeaderIcons = styled.div`
     img {
       margin: 10px;
     }
+    img:nth-child(2) {
+      background: lightgrey;
+      padding: 10px;
+      border-radius: 45%;
+    }
+    img:nth-child(3) {
+      background: lightgrey;
+      padding: 12px;
+      border-radius: 45%;
+    }
+
+    .message-info-comments {
+      position: absolute;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      top: 0;
+      right: 25px;
+      width: 20px;
+      height: 15px;
+      background: #6276fd;
+      color: white;
+    }
+    .message-info-bell {
+      font-size: 12px;
+      color: white;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      top: 0;
+      right: 85px;
+      width: 20px;
+      height: 15px;
+      background: #6276fd;
+    }
   }
 `;
 //#endregion
@@ -141,6 +180,8 @@ const Navbar = ({ icon, handleIconLink }) => {
           <img src="./icons/house.png" alt="" />
           <img src="./icons/comments.png" alt="" />
           <img src="./icons/bell.png" alt="" />
+          <div className="message-info-comments">3</div>
+          <div className="message-info-bell">3</div>
         </div>
       </HeaderIcons>
     </Header>

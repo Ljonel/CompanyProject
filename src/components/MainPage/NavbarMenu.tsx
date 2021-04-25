@@ -71,6 +71,11 @@ const MenuContainer = styled.div`
     text-align: center;
     cursor: pointer;
   }
+  .menu-account {
+    a {
+      display: flex;
+    }
+  }
 `;
 //#endregion
 
