@@ -6,6 +6,8 @@ import PageContent from "./PageContent";
 import { useDispatch } from "react-redux";
 import { getUsers } from "../../actions/usersActions";
 import { getPhotos } from "../../actions/photosActions";
+import { IUsersReducer } from "../../reducers/usersReducer";
+import { IPhotosReducer } from "../../reducers/photosReducer";
 
 type GetUsers = ReturnType<typeof getUsers>;
 type GetPhotos = ReturnType<typeof getPhotos>;
