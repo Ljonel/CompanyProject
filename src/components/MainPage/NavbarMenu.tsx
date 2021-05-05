@@ -121,7 +121,7 @@ const headerMenuOptions: HeaderMenuOptions[] = [
   },
 ];
 
-const NavbarMenu = ({ handleIconLink }) => {
+const NavbarMenu = ({ handleIconLink, numberOfId }) => {
   const options = headerMenuOptions.map((item) => {
     return (
       <NavLink
@@ -153,6 +153,7 @@ const NavbarMenu = ({ handleIconLink }) => {
     setInputText(text);
     console.log(text);
   };
+  console.log(numberOfId);
 
   return (
     <Menu>
@@ -205,11 +206,11 @@ const NavbarMenu = ({ handleIconLink }) => {
               <img
                 className="navbarmenu-avatar-photo"
                 // src="./icons/navbarmenu-avatar.jpg"
-                src={photosList?.[0]?.url}
+                src={photosList?.[numberOfId]?.url}
                 alt="avatar"
               />
               <div className="navbarmenu-avatar">
-                <p>{usersList?.[0]?.name}</p>
+                <p>{usersList?.[numberOfId]?.name}</p>
                 <a href="index.html">See profile</a>
               </div>
             </NavLink>

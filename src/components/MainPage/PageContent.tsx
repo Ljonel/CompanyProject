@@ -12,10 +12,14 @@ import UserPage from "../../pages/UserPage";
 
 export interface PageContentProps {}
 
-const PageContent: React.SFC<PageContentProps> = () => {
+const PageContent: React.SFC<PageContentProps> = ({ numberOfId }) => {
   return (
     <Switch>
-      <Route path="/" exact component={HomePage} />
+      <Route
+        path="/"
+        exact
+        component={() => <HomePage numberOfId={numberOfId} />}
+      />
       <Route path="/administration" component={AdministrationPage} />
       <Route path="/publications" component={PublicationsPage} />
       <Route path="/ecosystem" component={EcosystemPage} />

@@ -129,7 +129,7 @@ const HeaderIcons = styled.div`
 `;
 //#endregion
 
-const Navbar = ({ icon, handleIconLink }) => {
+const Navbar = ({ icon, handleIconLink, numberOfId }) => {
   const [
     wrapperRef,
     dropdownOpen,
@@ -156,7 +156,12 @@ const Navbar = ({ icon, handleIconLink }) => {
             alt="house2"
           />
           <p>{icon.name}</p> {/*actually clicked title*/}
-          {dropdownOpen && <NavbarMenu handleIconLink={handleIconLink} />}
+          {dropdownOpen && (
+            <NavbarMenu
+              handleIconLink={handleIconLink}
+              numberOfId={numberOfId}
+            />
+          )}
         </div>
         <img
           onClick={closeDropdown}

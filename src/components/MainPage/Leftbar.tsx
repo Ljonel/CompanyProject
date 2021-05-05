@@ -117,22 +117,27 @@ export interface LeftbarProps {}
 //   .then((response) => response.json())
 //   .then((json) => json.map((item) => users.push(item)));
 
-const Leftbar: React.SFC<LeftbarProps> = ({ icon, handleIconLink }) => {
+const Leftbar: React.SFC<LeftbarProps> = ({
+  icon,
+  handleIconLink,
+  numberOfId,
+}) => {
   const { usersList } = useSelector<IState, IUsersReducer>((globalState) => ({
     ...globalState.users,
   }));
   const { photosList } = useSelector<IState, IPhotosReducer>((global) => ({
     ...global.photos,
   }));
+  console.log(numberOfId);
 
   return (
     <LeftbarWrapper className="leftbar-wrapper">
       <UserCard className="user-card">
         <UserInfo className="user-info">
           {/* <img src="./icons/navbarmenu-avatar.jpg" alt="xd" /> */}
-          <img src={photosList?.[0]?.url} alt="xd" />
-          <h3>{usersList?.[0]?.name}</h3>
-          <p>{usersList?.[0]?.company.name}</p>
+          <img src={photosList?.[numberOfId]?.url} alt="xd" />
+          <h3>{usersList?.[numberOfId]?.name}</h3>
+          <p>{usersList?.[numberOfId]?.company.name}</p>
         </UserInfo>
         <UserBody className="user-body">
           <hr />

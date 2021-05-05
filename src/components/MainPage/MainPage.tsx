@@ -6,11 +6,19 @@ import PageContent from "./PageContent";
 import { useDispatch } from "react-redux";
 import { getUsers } from "../../actions/usersActions";
 import { getPhotos } from "../../actions/photosActions";
+import { getPosts } from "../../actions/postsActions";
 import { IUsersReducer } from "../../reducers/usersReducer";
 import { IPhotosReducer } from "../../reducers/photosReducer";
+import { IPostsReducer } from "../../reducers/postsReducer";
+import { useSelector } from "react-redux";
+import { IState } from "../../reducers";
 
 type GetUsers = ReturnType<typeof getUsers>;
 type GetPhotos = ReturnType<typeof getPhotos>;
+type GetPosts = ReturnType<typeof getPosts>;
+
+const numberOfId: number = 0;
+//Math.floor(Math.random() * 10);
 const MainPage = () => {
   //for dropdown menu icons in header initializing react state
   const [icon, setIcon] = React.useState({
@@ -31,18 +39,27 @@ const MainPage = () => {
   useEffect(() => {
     dispatch<GetUsers>(getUsers());
     dispatch<GetPhotos>(getPhotos());
+    dispatch<GetPosts>(getPosts());
   }, []);
 
   return (
     <BrowserRouter>
       <div className="mainPage">
-        <Navbar handleIconLink={handleIconLink} icon={icon} />
+        <Navbar
+          handleIconLink={handleIconLink}
+          icon={icon}
+          numberOfId={numberOfId}
+        />
         <main>
           <aside>
-            <Leftbar icon={icon} handleIconLink={handleIconLink} />
+            <Leftbar
+              icon={icon}
+              handleIconLink={handleIconLink}
+              numberOfId={numberOfId}
+            />
           </aside>
           <section>
-            <PageContent />
+            <PageContent numberOfId={numberOfId} />
           </section>
         </main>
       </div>
