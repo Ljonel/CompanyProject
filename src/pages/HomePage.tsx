@@ -6,7 +6,10 @@ import { IState } from "../reducers";
 import { IUsersReducer } from "../reducers/usersReducer";
 import { IPhotosReducer } from "../reducers/photosReducer";
 import { IPostsReducer } from "../reducers/postsReducer";
-import LatestComponent from "./HomePageComponents/LatestComponent";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+
 export interface HomePageProps {}
 //#region styles
 const HomepageContainer = styled.div`
@@ -106,6 +109,7 @@ const Publication = styled.div`
     justify-content: center;
     padding: 10px;
     h2 {
+      font-weight: bold;
       font-size: 16px;
       min-height: 60%;
       max-height: 70%;
@@ -123,13 +127,114 @@ const Publication = styled.div`
     }
   }
 `;
+const Workspaces = styled.div`
+  width: 68vw;
+  height: 350px;
+  margin-top: 50px;
+
+  h1 {
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    text-align: left;
+  }
+
+  .myslider {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    .slick-track {
+      display: flex;
+    }
+    .slick-slide {
+      margin: 5px;
+    }
+    .slider-element {
+      -webkit-box-shadow: 0px 0px 9px -3px #000000;
+      box-shadow: 0px 3px 9px -3px #000000;
+      min-width: 100px;
+      height: 250px;
+      background: white;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding-bottom: 5px;
+
+      .slider-element-photo {
+        width: 100%;
+        height: 40%;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .slider-element-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        height: 60%;
+        text-align: left;
+        span {
+          margin-left: 10px;
+          font-size: 10px;
+          color: gray;
+        }
+        .slider-content-img {
+          position: absolute;
+          top: 65px;
+          left: 20px;
+          width: 130px;
+          height: 130px;
+          border-radius: 10px;
+          overflow: hidden;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .slider-title {
+          width: 100%;
+          height: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          h3 {
+            font-size: 20px;
+            color: darkblue;
+            font-weight: bold;
+            margin-left: 90px;
+          }
+        }
+        .slider-text {
+          display: flex;
+          width: 100%;
+          height: 50%;
+          align-items: flex-end;
+          padding: 5px;
+          .slider-text-icons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            p {
+              margin: 5px 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 //#endregion
 
-//
-
 const HomePage: React.SFC<HomePageProps> = ({ numberOfId }) => {
-  console.log(numberOfId);
+  // console.log(numberOfId);
 
   const { usersList } = useSelector<IState, IUsersReducer>((globalState) => ({
     ...globalState.users,
@@ -140,6 +245,42 @@ const HomePage: React.SFC<HomePageProps> = ({ numberOfId }) => {
   const { postsList } = useSelector<IState, IPostsReducer>((global) => ({
     ...global.posts,
   }));
+  var settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    centerPadding: 30,
+
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
 
   return (
     <HomepageContainer>
@@ -231,6 +372,67 @@ const HomePage: React.SFC<HomePageProps> = ({ numberOfId }) => {
           <h3>See more publications</h3>
         </div>
       </LatestContainer>
+      <Workspaces>
+        <h1>Workspaces</h1>
+
+        <Slider className="myslider" {...settings}>
+          <div className="slider-element">
+            <div className="slider-element-photo">
+              <img src={photosList?.[numberOfId]?.url} alt="" />
+            </div>
+            <div className="slider-element-content">
+              <div className="slider-content-img">
+                <img src={photosList?.[5]?.url} alt="" />
+              </div>
+              <div className="slider-title">
+                <h3>Client contract</h3>
+              </div>
+              <div className="slider-text">
+                <div className="slider-text-icons">
+                  <img src="./icons/contractlow.png" alt="" />
+                  <p>Contract</p>
+                </div>
+                <div className="slider-text-icons">
+                  <img src="./icons/people.png" alt="" />
+                  <p>150 users</p>
+                </div>
+              </div>
+              <span>Last update 2 days ago</span>
+            </div>
+          </div>
+
+          {
+            //
+          }
+          <div className="slider-element">
+            <h3>2</h3>
+          </div>
+          <div className="slider-element">
+            <h3>2</h3>
+          </div>
+          <div className="slider-element">
+            <h3>2</h3>
+          </div>
+          <div className="slider-element">
+            <h3>2</h3>
+          </div>
+          <div className="slider-element">
+            <h3>2</h3>
+          </div>
+          <div className="slider-element">
+            <h3>2</h3>
+          </div>
+          <div className="slider-element">
+            <h3>2</h3>
+          </div>
+          <div className="slider-element">
+            <h3>2</h3>
+          </div>
+          <div className="slider-element">
+            <h3>2</h3>
+          </div>
+        </Slider>
+      </Workspaces>
     </HomepageContainer>
   );
 };
