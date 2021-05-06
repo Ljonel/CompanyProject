@@ -9,22 +9,42 @@ import EntitiesPage from "../../pages/EntitiesPage";
 import PeoplePage from "../../pages/PeoplePage";
 import ErrorPage from "../../pages/ErrorPage";
 import UserPage from "../../pages/UserPage";
+import WorkspacePage from "../../pages/Workspace";
 
 export interface PageContentProps {}
 
 const PageContent: React.SFC<PageContentProps> = ({ numberOfId }) => {
+  const [companyName, setCompanyName] = React.useState({
+    name: "",
+  });
+
+  //change actuall icon in dropdown menu with react state
+  const handleCompanyName = (name: string) => {
+    setCompanyName(() => ({
+      name: name,
+    }));
+  };
   return (
     <Switch>
       <Route
         path="/"
         exact
-        component={() => <HomePage numberOfId={numberOfId} />}
+        component={() => (
+          <HomePage
+            numberOfId={numberOfId}
+            handleCompanyName={handleCompanyName}
+          />
+        )}
       />
       <Route path="/administration" component={AdministrationPage} />
       <Route path="/publications" component={PublicationsPage} />
       <Route path="/ecosystem" component={EcosystemPage} />
       <Route path="/entities" component={EntitiesPage} />
       <Route path="/people" component={PeoplePage} />
+      <Route
+        path="/workspace"
+        component={() => <WorkspacePage companyName={companyName} />}
+      />
       <Route path="/user" component={UserPage} />
       <Route component={ErrorPage} />
     </Switch>

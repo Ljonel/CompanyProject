@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import MainPage from "../components/MainPage/MainPage";
 import { useSelector } from "react-redux";
@@ -9,6 +9,7 @@ import { IPostsReducer } from "../reducers/postsReducer";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import { Link } from "react-router-dom";
 
 export interface HomePageProps {}
 //#region styles
@@ -131,6 +132,10 @@ const Workspaces = styled.div`
   width: 68vw;
   height: 350px;
   margin-top: 50px;
+  a {
+    text-decoration: none;
+    color: black;
+  }
 
   h1 {
     width: 100%;
@@ -178,6 +183,7 @@ const Workspaces = styled.div`
         width: 100%;
         height: 60%;
         text-align: left;
+        position: relative;
         span {
           margin-left: 10px;
           font-size: 10px;
@@ -185,10 +191,10 @@ const Workspaces = styled.div`
         }
         .slider-content-img {
           position: absolute;
-          top: 65px;
+          top: -45px;
           left: 20px;
-          width: 130px;
-          height: 130px;
+          width: 110px;
+          height: 110px;
           border-radius: 10px;
           overflow: hidden;
           img {
@@ -204,7 +210,7 @@ const Workspaces = styled.div`
           justify-content: center;
           align-items: center;
           h3 {
-            font-size: 20px;
+            font-size: 16px;
             color: darkblue;
             font-weight: bold;
             margin-left: 90px;
@@ -231,9 +237,65 @@ const Workspaces = styled.div`
   }
 `;
 
+const Work = styled.div`
+  margin-top: 50px;
+  width: 90%;
+  height: 100%;
+  text-align: left;
+
+  .work-title {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    h1 {
+      width: 70%;
+      height: 100%;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .work-wrapper {
+      display: flex;
+      width: 30%;
+      height: 100%;
+      justify-content: space-between;
+      .work-input {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        background: white;
+        input {
+          height: 100%;
+          background: none;
+          outline: none;
+          border: none;
+        }
+        img {
+          background: white;
+        }
+      }
+      .work-filter {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-content: space-between;
+        h3 {
+          font-weight: bold;
+          color: darkblue;
+          margin: 0px 5px;
+        }
+      }
+    }
+  }
+`;
+
 //#endregion
 
-const HomePage: React.SFC<HomePageProps> = ({ numberOfId }) => {
+const HomePage: React.SFC<HomePageProps> = ({
+  numberOfId,
+  handleCompanyName,
+}) => {
   // console.log(numberOfId);
 
   const { usersList } = useSelector<IState, IUsersReducer>((globalState) => ({
@@ -281,6 +343,45 @@ const HomePage: React.SFC<HomePageProps> = ({ numberOfId }) => {
       },
     ],
   };
+  const [companyName, setCompanyName] = React.useState({
+    name: "",
+  });
+  const sliderElements = usersList.map((item) => {
+    return (
+      <Link
+        key={item.id}
+        onClick={() => handleCompanyName(item.company.name)}
+        to={{
+          pathname: `/workspace/${item.id}`,
+        }}
+      >
+        <div className="slider-element">
+          <div className="slider-element-photo">
+            <img src={photosList?.[item.id]?.url} alt="" />
+          </div>
+          <div className="slider-element-content">
+            <div className="slider-content-img">
+              <img src={photosList?.[item.id + 1]?.url} alt="" />
+            </div>
+            <div className="slider-title">
+              <h3>{item.company.name}</h3>
+            </div>
+            <div className="slider-text">
+              <div className="slider-text-icons">
+                <img src="./icons/contractlow.png" alt="" />
+                <p>Contract</p>
+              </div>
+              <div className="slider-text-icons">
+                <img src="./icons/people.png" alt="" />
+                <p>150 users</p>
+              </div>
+            </div>
+            <span>Last update 2 days ago</span>
+          </div>
+        </div>
+      </Link>
+    );
+  });
 
   return (
     <HomepageContainer>
@@ -374,65 +475,27 @@ const HomePage: React.SFC<HomePageProps> = ({ numberOfId }) => {
       </LatestContainer>
       <Workspaces>
         <h1>Workspaces</h1>
-
         <Slider className="myslider" {...settings}>
-          <div className="slider-element">
-            <div className="slider-element-photo">
-              <img src={photosList?.[numberOfId]?.url} alt="" />
-            </div>
-            <div className="slider-element-content">
-              <div className="slider-content-img">
-                <img src={photosList?.[5]?.url} alt="" />
-              </div>
-              <div className="slider-title">
-                <h3>Client contract</h3>
-              </div>
-              <div className="slider-text">
-                <div className="slider-text-icons">
-                  <img src="./icons/contractlow.png" alt="" />
-                  <p>Contract</p>
-                </div>
-                <div className="slider-text-icons">
-                  <img src="./icons/people.png" alt="" />
-                  <p>150 users</p>
-                </div>
-              </div>
-              <span>Last update 2 days ago</span>
-            </div>
-          </div>
-
-          {
-            //
-          }
-          <div className="slider-element">
-            <h3>2</h3>
-          </div>
-          <div className="slider-element">
-            <h3>2</h3>
-          </div>
-          <div className="slider-element">
-            <h3>2</h3>
-          </div>
-          <div className="slider-element">
-            <h3>2</h3>
-          </div>
-          <div className="slider-element">
-            <h3>2</h3>
-          </div>
-          <div className="slider-element">
-            <h3>2</h3>
-          </div>
-          <div className="slider-element">
-            <h3>2</h3>
-          </div>
-          <div className="slider-element">
-            <h3>2</h3>
-          </div>
-          <div className="slider-element">
-            <h3>2</h3>
-          </div>
+          {sliderElements}
         </Slider>
       </Workspaces>
+      <Work>
+        <div className="work-title">
+          <h1>Resume your work</h1>
+          <div className="work-wrapper">
+            <div className="work-input">
+              <input placeholder="Filter by title" type="text" />
+              <img src="./icons/search.png" alt="search" />
+            </div>
+            <div className="work-filter">
+              <img src="./icons/ecosystem.png" alt="" />
+              <h3>Followed</h3>
+              <img src="./icons/arrow-down.png" alt="" />
+            </div>
+          </div>
+        </div>
+        <div className="work-container"></div>
+      </Work>
     </HomepageContainer>
   );
 };
