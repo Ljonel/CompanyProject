@@ -1,7 +1,7 @@
 .mainPage {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  /* height: 100vh; */
   font-family: "Montserrat", sans-serif;
   background: rgb(243, 252, 255);
 }
@@ -11,7 +11,7 @@
   height: 100%;
 }
 .mainPage aside {
-  width: 350px;
+  min-width: 350px;
 }
 .mainPage section {
   flex-grow: 1;

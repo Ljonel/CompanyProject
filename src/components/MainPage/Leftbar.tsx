@@ -9,7 +9,6 @@ import { IPhotosReducer } from "../../reducers/photosReducer";
 //#region
 const LeftbarWrapper = styled.div`
   width: 100%;
-  height: 100%;
   padding: 30px 10px 0 10px;
   display: flex;
   flex-direction: column;

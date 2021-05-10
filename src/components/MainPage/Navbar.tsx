@@ -6,6 +6,7 @@ import useDropdown from "react-dropdown-hook";
 //#region styles
 const Header = styled.div`
   display: flex;
+  height: auto;
   height: 50px;
   background-color: #fff;
   -webkit-box-shadow: 0px 0px 17px -3px #000000;

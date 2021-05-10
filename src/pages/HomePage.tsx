@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import MainPage from "../components/MainPage/MainPage";
 import { useSelector } from "react-redux";
@@ -6,15 +6,18 @@ import { IState } from "../reducers";
 import { IUsersReducer } from "../reducers/usersReducer";
 import { IPhotosReducer } from "../reducers/photosReducer";
 import { IPostsReducer } from "../reducers/postsReducer";
+import { ICommentsReducer } from "../reducers/commentsReducer";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import Pagination from "./HomepageComponents/Pagination";
+import HomePost from "./HomepageComponents/HomePost";
 
 export interface HomePageProps {}
 //#region styles
 const HomepageContainer = styled.div`
-  height: 100%;
+  /* height: 100%; */
   padding: 30px 0 0 10px;
 `;
 const LatestContainer = styled.div`
@@ -240,9 +243,7 @@ const Workspaces = styled.div`
 const Work = styled.div`
   margin-top: 50px;
   width: 90%;
-  height: 100%;
   text-align: left;
-
   .work-title {
     display: flex;
     align-items: center;
@@ -273,6 +274,7 @@ const Work = styled.div`
         }
         img {
           background: white;
+          padding-right: 5px;
         }
       }
       .work-filter {
@@ -289,15 +291,61 @@ const Work = styled.div`
     }
   }
 `;
+const WorkElement = styled.div`
+  width: 100%;
+  height: 100px;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-shadow: 0px 0px 12px -3px #000000;
+  box-shadow: 0px 0px 12px -3px #000000;
+  background: #fff;
+  padding: 10px 5px 0 15px;
+  justify-content: center;
+  border-radius: 5px;
+  transition: 0.2s;
+  &:hover {
+    background: lightgray;
+  }
+  h1 {
+    font-weight: bold;
+    color: darkblue;
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
 
+  .workElement-icons {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    font-size: 13px;
+    color: gray;
+    margin-top: 5px;
+    .el {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 5px;
+    }
+    p {
+      font-size: 15px;
+    }
+    img {
+      width: 25px;
+      height: 25px;
+      margin: 0 5px;
+    }
+    img:nth-child(1) {
+      border-radius: 50%;
+    }
+  }
+`;
 //#endregion
 
 const HomePage: React.SFC<HomePageProps> = ({
   numberOfId,
   handleCompanyName,
 }) => {
-  // console.log(numberOfId);
-
   const { usersList } = useSelector<IState, IUsersReducer>((globalState) => ({
     ...globalState.users,
   }));
@@ -307,6 +355,10 @@ const HomePage: React.SFC<HomePageProps> = ({
   const { postsList } = useSelector<IState, IPostsReducer>((global) => ({
     ...global.posts,
   }));
+  let { commentsList } = useSelector<IState, ICommentsReducer>((global) => ({
+    ...global.comments,
+  }));
+  commentsList = commentsList.slice(0, 300);
   var settings = {
     dots: true,
     infinite: false,
@@ -343,12 +395,10 @@ const HomePage: React.SFC<HomePageProps> = ({
       },
     ],
   };
-  const [companyName, setCompanyName] = React.useState({
-    name: "",
-  });
+
   const sliderElements = usersList.map((item) => {
     return (
-      <Link
+      <NavLink
         key={item.id}
         onClick={() => handleCompanyName(item.company.name)}
         to={{
@@ -379,10 +429,21 @@ const HomePage: React.SFC<HomePageProps> = ({
             <span>Last update 2 days ago</span>
           </div>
         </div>
-      </Link>
+      </NavLink>
     );
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(10);
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = commentsList.slice(indexOfFirstPost, indexOfLastPost);
+  const [inputText, setInputText] = useState<string>("");
+  const inputHandle = (e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+    setInputText(text);
+  };
 
+  const paginate = (n) => setCurrentPage(n);
   return (
     <HomepageContainer>
       <LatestContainer>
@@ -484,7 +545,12 @@ const HomePage: React.SFC<HomePageProps> = ({
           <h1>Resume your work</h1>
           <div className="work-wrapper">
             <div className="work-input">
-              <input placeholder="Filter by title" type="text" />
+              <input
+                value={inputText}
+                onChange={inputHandle}
+                placeholder="Filter by title"
+                type="text"
+              />
               <img src="./icons/search.png" alt="search" />
             </div>
             <div className="work-filter">
@@ -494,7 +560,19 @@ const HomePage: React.SFC<HomePageProps> = ({
             </div>
           </div>
         </div>
-        <div className="work-container"></div>
+        <div className="work-container">
+          <HomePost
+            commentsList={currentPosts}
+            photosList={photosList}
+            usersList={usersList}
+            inputText={inputText}
+          />
+        </div>
+        <Pagination
+          postsPerPage={postsPerPage}
+          totalPosts={commentsList.length}
+          paginate={paginate}
+        />
       </Work>
     </HomepageContainer>
   );

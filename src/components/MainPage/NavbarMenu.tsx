@@ -151,9 +151,8 @@ const NavbarMenu = ({ handleIconLink, numberOfId }) => {
   const inputHandle = (e: ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
     setInputText(text);
-    console.log(text);
+    // console.log(text);
   };
-  console.log(numberOfId);
 
   return (
     <Menu>
