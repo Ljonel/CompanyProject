@@ -131,12 +131,8 @@ const HeaderIcons = styled.div`
 //#endregion
 
 const Navbar = ({ icon, handleIconLink, numberOfId }) => {
-  const [
-    wrapperRef,
-    dropdownOpen,
-    toggleDropdown,
-    closeDropdown,
-  ] = useDropdown();
+  const [wrapperRef, dropdownOpen, toggleDropdown, closeDropdown] =
+    useDropdown();
 
   return (
     <Header>

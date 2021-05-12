@@ -45,7 +45,10 @@ const PageContent: React.SFC<PageContentProps> = ({ numberOfId }) => {
         path="/workspace"
         component={() => <WorkspacePage companyName={companyName} />}
       />
-      <Route path="/user" component={UserPage} />
+      <Route
+        path="/user"
+        component={() => <UserPage numberOfId={numberOfId} />}
+      />
       <Route component={ErrorPage} />
     </Switch>
   );
