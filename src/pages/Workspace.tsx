@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export interface PeoplePageProps {}
 
-const WorkspacePage: React.SFC<PeoplePageProps> = ({ companyName }) => {
+const WorkspacePage = ({ companyName }) => {
   console.log(companyName);
 
   return (

@@ -13,7 +13,7 @@ import WorkspacePage from "../../pages/Workspace";
 
 export interface PageContentProps {}
 
-const PageContent: React.SFC<PageContentProps> = ({ numberOfId }) => {
+const PageContent = ({ numberOfId }) => {
   const [companyName, setCompanyName] = React.useState({
     name: "",
   });

@@ -32,11 +32,7 @@ const PaginationContainer = styled.div`
 `;
 export interface PaginationProps {}
 
-const Pagination: React.SFC<PaginationProps> = ({
-  postsPerPage,
-  totalPosts,
-  paginate,
-}) => {
+const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
     pageNumbers.push(i);

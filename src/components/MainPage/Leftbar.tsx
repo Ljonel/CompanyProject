@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -66,7 +66,7 @@ const UserBody = styled.div`
 `;
 
 const Icon = styled.img`
-  width: 15px;
+  /* width: 15px; */
   border: 1px solid darkblue;
   padding: 2px 5px;
   border-radius: 5px;
@@ -112,15 +112,7 @@ const Nav = styled.nav`
 
 export interface LeftbarProps {}
 
-// fetch("https://jsonplaceholder.typicode.com/users")
-//   .then((response) => response.json())
-//   .then((json) => json.map((item) => users.push(item)));
-
-const Leftbar: React.SFC<LeftbarProps> = ({
-  icon,
-  handleIconLink,
-  numberOfId,
-}) => {
+const Leftbar = ({ handleIconLink, numberOfId }) => {
   const { usersList } = useSelector<IState, IUsersReducer>((globalState) => ({
     ...globalState.users,
   }));
@@ -134,7 +126,7 @@ const Leftbar: React.SFC<LeftbarProps> = ({
       <UserCard className="user-card">
         <UserInfo className="user-info">
           {/* <img src="./icons/navbarmenu-avatar.jpg" alt="xd" /> */}
-          <img src={photosList?.[numberOfId]?.url} alt="xd" />
+          <img src={photosList?.[numberOfId]?.url} />
           <h3>{usersList?.[numberOfId]?.name}</h3>
           <p>{usersList?.[numberOfId]?.company.name}</p>
         </UserInfo>
@@ -167,7 +159,7 @@ const Leftbar: React.SFC<LeftbarProps> = ({
             </li>
           </NavLink>
           <NavLink
-            to="ecosystem"
+            to="/ecosystem"
             onClick={() => handleIconLink("ecosystem.png", "Ecosystem")}
           >
             <li>
@@ -176,7 +168,7 @@ const Leftbar: React.SFC<LeftbarProps> = ({
             </li>
           </NavLink>
           <NavLink
-            to="entities"
+            to="/entities"
             onClick={() => handleIconLink("entities2.png", "Entities")}
           >
             <li>

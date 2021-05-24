@@ -342,10 +342,7 @@ const WorkElement = styled.div`
 `;
 //#endregion
 
-const HomePage: React.SFC<HomePageProps> = ({
-  numberOfId,
-  handleCompanyName,
-}) => {
+const HomePage = ({ numberOfId, handleCompanyName }) => {
   const { usersList } = useSelector<IState, IUsersReducer>((globalState) => ({
     ...globalState.users,
   }));

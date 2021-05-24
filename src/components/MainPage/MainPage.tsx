@@ -56,11 +56,7 @@ const MainPage = () => {
         />
         <main>
           <aside>
-            <Leftbar
-              icon={icon}
-              handleIconLink={handleIconLink}
-              numberOfId={numberOfId}
-            />
+            <Leftbar handleIconLink={handleIconLink} numberOfId={numberOfId} />
           </aside>
           <section>
             <PageContent numberOfId={numberOfId} />
