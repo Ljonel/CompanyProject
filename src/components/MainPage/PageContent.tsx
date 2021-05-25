@@ -39,7 +39,10 @@ const PageContent = ({ numberOfId }) => {
       <Route path="/administration" component={AdministrationPage} />
       <Route path="/publications" component={PublicationsPage} />
       <Route path="/ecosystem" component={EcosystemPage} />
-      <Route path="/entities" component={EntitiesPage} />
+      <Route
+        path="/entities"
+        component={() => <EntitiesPage numberOfId={numberOfId} />}
+      />
       <Route path="/people" component={PeoplePage} />
       <Route
         path="/workspace"

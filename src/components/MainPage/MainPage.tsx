@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import Navbar from "./Navbar";
 import Leftbar from "./Leftbar";
@@ -20,9 +20,9 @@ type GetPhotos = ReturnType<typeof getPhotos>;
 type GetPosts = ReturnType<typeof getPosts>;
 type GetComments = ReturnType<typeof getComments>;
 
-const numberOfId: number = 0;
 //Math.floor(Math.random() * 10);
 const MainPage = () => {
+  const [numberOfId, setNumberOfId] = useState(0);
   //for dropdown menu icons in header initializing react state
   const [icon, setIcon] = React.useState({
     url: "house2.png",

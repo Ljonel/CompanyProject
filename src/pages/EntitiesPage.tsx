@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import { SiMicrosoft } from "react-icons/si";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -15,6 +15,10 @@ import { IState } from "../reducers";
 import { useSelector } from "react-redux";
 import { IPhotosReducer } from "../reducers/photosReducer";
 import { IUsersReducer } from "../reducers/usersReducer";
+import { IPostsReducer } from "../reducers/postsReducer";
+import { Select, Descriptions, Upload, Button } from "antd";
+const Option = Select;
+
 export interface EntitiesPageProps {}
 
 const EntitiesContainer = styled.div`
@@ -50,9 +54,18 @@ const EntitiesContainer = styled.div`
       background: lightblue;
       border: 1px solid lightgray;
       border-radius: 5px;
+      transition: 0.5s;
+
       .tile {
         display: flex;
         padding: 5px;
+        height: 100%;
+        align-items: center;
+        cursor: pointer;
+        &:hover {
+          background: lightgray;
+          color: white;
+        }
         p {
           margin: 0 5px;
           font-weight: bold;
@@ -68,6 +81,10 @@ const EntitiesContainer = styled.div`
         height: 100%;
         background: white;
         color: gray;
+        cursor: pointer;
+        &:hover {
+          color: darkblue;
+        }
       }
     }
   }
@@ -129,9 +146,28 @@ const EntitiesContainer = styled.div`
       border: 2px solid darkblue;
       height: 80%;
       border-radius: 5px;
+      .ant-select {
+        min-width: 100px;
+      }
+      .ant-select-selector {
+        border: none;
+        background: none;
+      }
+      .ant-select-focused:focus {
+        outline: none;
+        border: none;
+      }
+      .ant-select-open:focus {
+        outline: none;
+        border: none;
+      }
+      .ant-select-single:focus {
+        outline: none;
+        border: none;
+      }
     }
   }
-  .entities {
+  .mosaicType {
     max-width: 100%;
     height: 100%;
     margin-top: 10px;
@@ -139,7 +175,7 @@ const EntitiesContainer = styled.div`
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
     .tile {
-      min-width: 20%;
+      width: 280px;
       height: 130px;
       display: flex;
       border-radius: 5px;
@@ -150,7 +186,6 @@ const EntitiesContainer = styled.div`
         background: #eeeeee;
       }
       .tile-image {
-        width: 100px;
         height: 100%;
         display: flex;
         justify-content: center;
@@ -174,15 +209,83 @@ const EntitiesContainer = styled.div`
           display: flex;
           align-items: flex-end;
           padding-left: 5px;
+          word-break: break-all;
+          overflow: hidden;
+
           h1 {
             color: darkblue;
-            font-size: 20px;
+            font-size: 15px;
             font-weight: bold;
           }
         }
         .tile-text {
           display: flex;
+          word-break: break-all;
+          width: 100%;
+          height: 50%;
+          padding-left: 5px;
+          padding-top: 5px;
 
+          p {
+            color: gray;
+          }
+        }
+      }
+    }
+  }
+  .listType {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 10px;
+    margin-top: 10px;
+    .tile {
+      width: 100%;
+      height: 130px;
+      display: flex;
+      border-radius: 5px;
+      -webkit-box-shadow: 0px 3px 2px -1px #000000;
+      box-shadow: 0px 3px 10px -1px #000000;
+      transition: 0.2s;
+      &:hover {
+        background: #eeeeee;
+      }
+      .tile-image {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 90px;
+          height: 100px;
+          margin-left: 5px;
+          border-radius: 5px;
+        }
+      }
+      .tile-body {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        height: 100%;
+        text-align: left;
+        .tile-title {
+          width: 100%;
+          height: 50%;
+          display: flex;
+          align-items: flex-end;
+          padding-left: 5px;
+          word-break: break-all;
+          overflow: hidden;
+
+          h1 {
+            color: darkblue;
+            font-size: 15px;
+            font-weight: bold;
+          }
+        }
+        .tile-text {
+          display: flex;
+          word-break: break-all;
           width: 100%;
           height: 50%;
           padding-left: 5px;
@@ -196,29 +299,81 @@ const EntitiesContainer = styled.div`
     }
   }
 `;
-const EntitiesPage = () => {
+const EntitiesPage = (numberOfId) => {
   const { photosList } = useSelector<IState, IPhotosReducer>((global) => ({
     ...global.photos,
   }));
   const { usersList } = useSelector<IState, IUsersReducer>((global) => ({
     ...global.users,
   }));
-  const tiles = photosList.slice(0, 32).map((item) => (
-    <div className="tile" key={item.id}>
-      <div className="tile-image">
-        <img src={item.url} alt="" />
-      </div>
-      <div className="tile-body">
-        <div className="tile-title">
-          <h1>ABC generic company</h1>
-        </div>
-        <div className="tile-text">
-          <p>kjwaegkjwaengkjwaegn uwgekingewakjkn</p>
-        </div>
-      </div>
-    </div>
-  ));
+  const { postsList } = useSelector<IState, IPostsReducer>((global) => ({
+    ...global.posts,
+  }));
 
+  const [inputText, setInputText] = useState<string>("");
+  const [followed, setFollowed] = useState({
+    title: "Followed",
+    bool: true,
+  });
+  const [displayType, setDisplayType] = useState({ display: "mosaicType" });
+  const inputHandle = (e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
+    setInputText(text);
+  };
+  const [isSorted, setIsSorted] = useState(false);
+  const sortHandle = () => {
+    const sort = isSorted;
+    setIsSorted(!sort);
+  };
+
+  const followedHandle = (value) => {
+    let f = followed.bool;
+    if (value === "followed") {
+      f = true;
+      setFollowed({
+        title: "Followed",
+        bool: f,
+      });
+    } else if (value === "my") {
+      f = false;
+      setFollowed({ title: "My", bool: f });
+    }
+  };
+
+  const tiles = photosList
+    .slice(0, 32)
+    .sort((a, b) =>
+      isSorted ? b.title.localeCompare(b.title) : a.title.localeCompare(b.title)
+    )
+    .map((item) => {
+      const posts = postsList.find((post) => post.id === item.id);
+      if (followed.bool === true || item.id === 1) {
+        if (posts.title.toLowerCase().includes(inputText.toLowerCase())) {
+          return (
+            <div className="tile" key={item.id}>
+              <div className="tile-image">
+                <img src={item.url} alt="" />
+              </div>
+              <div className="tile-body">
+                <div className="tile-title">
+                  <h1>{posts.title}</h1>
+                </div>
+                <div className="tile-text">
+                  <p>{posts.id}</p>
+                </div>
+              </div>
+            </div>
+          );
+        }
+      }
+    });
+
+  const setEntitiesToList = () => {
+    setDisplayType({ display: "listType" });
+  };
+  const setEntitiesToMosaic = () => {
+    setDisplayType({ display: "mosaicType" });
+  };
   return (
     <EntitiesContainer>
       <div className="mosaic">
@@ -227,11 +382,11 @@ const EntitiesPage = () => {
           <img src="./icons/cog.png" alt="" />
         </div>
         <div className="mosaic-list">
-          <div className="tile">
+          <div className="tile" onClick={setEntitiesToMosaic}>
             <SiMicrosoft />
             <p>Mosaic</p>
           </div>
-          <div className="hamburger">
+          <div className="hamburger" onClick={setEntitiesToList}>
             <GiHamburgerMenu />
           </div>
         </div>
@@ -247,7 +402,13 @@ const EntitiesPage = () => {
             style={{ fontSize: "30px", marginRight: "10px", color: "darkblue" }}
           />
           <hr style={{ height: "80%", display: "inline-block" }}></hr>
-          <BiSort style={{ marginLeft: "10px" }} /> <span>Sort</span>
+          <BiSort
+            style={{ marginLeft: "10px", cursor: "pointer" }}
+            onClick={sortHandle}
+          />{" "}
+          <span onClick={sortHandle} style={{ cursor: "pointer" }}>
+            Sort
+          </span>
           <FiFilter style={{ margin: "0 0 0 10px" }} />{" "}
           <span style={{ marginRight: "10px" }}>Filters</span>
           <hr style={{ height: "80%", display: "inline-block" }}></hr>
@@ -260,18 +421,33 @@ const EntitiesPage = () => {
         </div>
         <div className="search">
           <div className="search-input">
-            <input type="text" placeholder="Search ..." />
+            <input
+              type="text"
+              placeholder="Search ..."
+              value={inputText}
+              onChange={inputHandle}
+            />
             <AiOutlineSearch style={{ fontSize: "25px" }} />
           </div>
           <hr style={{ height: "80%", display: "inline-block" }} />
           <div className="followed">
             <RiSignalTowerLine />
-            <span>Followed</span>
-            <RiArrowDownSFill />
+            <span>
+              <Select
+                id="followedOptions"
+                size="small"
+                value={followed.title}
+                onChange={followedHandle}
+              >
+                <Option key="followed">Followed</Option>
+                <Option key="my">My</Option>
+              </Select>
+            </span>
+            {/* <RiArrowDownSFill /> */}
           </div>
         </div>
       </div>
-      <div className="entities">{tiles}</div>
+      <div className={displayType.display}>{tiles}</div>
     </EntitiesContainer>
   );
 };
