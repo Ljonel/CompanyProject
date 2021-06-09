@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
 import { SiMicrosoft } from "react-icons/si";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { BiRadioCircleMarked } from "react-icons/bi";
+import { BiPlus, BiRadioCircleMarked } from "react-icons/bi";
 import { RiArrowDownSFill } from "react-icons/ri";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { BiSort } from "react-icons/bi";
@@ -10,6 +10,7 @@ import { FiFilter } from "react-icons/fi";
 import { AiOutlineArrowsAlt } from "react-icons/ai";
 import { IoMdShareAlt } from "react-icons/io";
 import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
 import { RiSignalTowerLine } from "react-icons/ri";
 import { IState } from "../reducers";
 import { useSelector } from "react-redux";
@@ -17,6 +18,7 @@ import { IPhotosReducer } from "../reducers/photosReducer";
 import { IUsersReducer } from "../reducers/usersReducer";
 import { IPostsReducer } from "../reducers/postsReducer";
 import { Select, Descriptions, Upload, Button } from "antd";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 const Option = Select;
 
 export interface EntitiesPageProps {}
@@ -93,6 +95,14 @@ const EntitiesContainer = styled.div`
     width: 100%;
     height: 40px;
     justify-content: space-between;
+    .share-button {
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+    }
     .left-icons {
       display: flex;
       justify-content: center;
@@ -299,6 +309,41 @@ const EntitiesContainer = styled.div`
     }
   }
 `;
+
+const FiltersOn = styled.div`
+  display: flex;
+  width: 100%;
+  .filters-container {
+    width: 70%;
+    height: 100%;
+    padding: 20px;
+    border-radius: 15px;
+    p {
+      color: lightgray;
+      text-align: left;
+    }
+    .filters-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin: 5px;
+      .filters-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 25px;
+        input {
+          padding: 5px;
+          outline: none;
+          border: none;
+          background: lightgray;
+          width: 150px;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+`;
 const EntitiesPage = (numberOfId) => {
   const { photosList } = useSelector<IState, IPhotosReducer>((global) => ({
     ...global.photos,
@@ -320,11 +365,12 @@ const EntitiesPage = (numberOfId) => {
     const text = e.target.value;
     setInputText(text);
   };
-  const [isSorted, setIsSorted] = useState(false);
+  const [isSorted, setIsSorted] = useState(true);
   const sortHandle = () => {
     const sort = isSorted;
     setIsSorted(!sort);
   };
+  const [isFilterOn, setIsFilterOn] = useState(false);
 
   const followedHandle = (value) => {
     let f = followed.bool;
@@ -352,14 +398,14 @@ const EntitiesPage = (numberOfId) => {
           return (
             <div className="tile" key={item.id}>
               <div className="tile-image">
-                <img src={item.url} alt="" />
+                <img src={item?.url} alt="" />
               </div>
               <div className="tile-body">
                 <div className="tile-title">
-                  <h1>{posts.title}</h1>
+                  <h1>{posts?.title}</h1>
                 </div>
                 <div className="tile-text">
-                  <p>{posts.id}</p>
+                  <p>{posts?.id}</p>
                 </div>
               </div>
             </div>
@@ -373,6 +419,19 @@ const EntitiesPage = (numberOfId) => {
   };
   const setEntitiesToMosaic = () => {
     setDisplayType({ display: "mosaicType" });
+  };
+  const setFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
+  const showFilters = () => {
+    const on = isFilterOn;
+    setIsFilterOn(!isFilterOn);
   };
   return (
     <EntitiesContainer>
@@ -409,15 +468,26 @@ const EntitiesPage = (numberOfId) => {
           <span onClick={sortHandle} style={{ cursor: "pointer" }}>
             Sort
           </span>
-          <FiFilter style={{ margin: "0 0 0 10px" }} />{" "}
-          <span style={{ marginRight: "10px" }}>Filters</span>
+          <button className="share-button" onClick={showFilters}>
+            <FiFilter style={{ margin: "0 0 0 10px" }} />{" "}
+            <span style={{ marginRight: "10px" }}>Filters</span>
+          </button>
           <hr style={{ height: "80%", display: "inline-block" }}></hr>
           <AiOutlineArrowsAlt
-            style={{ margin: "0 10px 0 10px", fontSize: "20px" }}
+            style={{
+              margin: "0 10px 0 10px",
+              fontSize: "20px",
+              cursor: "pointer",
+            }}
+            onClick={setFullScreen}
           />
           <hr style={{ height: "80%", display: "inline-block" }} />
-          <IoMdShareAlt style={{ marginLeft: "10px" }} />
-          <span>Share</span>
+          <CopyToClipboard text={window.location.href}>
+            <button className="share-button">
+              <IoMdShareAlt style={{ marginLeft: "10px" }} />
+              <span>Share</span>
+            </button>
+          </CopyToClipboard>
         </div>
         <div className="search">
           <div className="search-input">
@@ -447,6 +517,88 @@ const EntitiesPage = (numberOfId) => {
           </div>
         </div>
       </div>
+      <FiltersOn style={{ display: isFilterOn ? "block" : "none" }}>
+        <div className="filters-container">
+          <p>
+            Rows are filtered by the following conditions starting from the top.
+          </p>
+          <div className="filters-row">
+            <div className="filters-item">
+              <AiOutlineClose />
+              <h3>Where</h3>
+            </div>
+            <div className="filters-item">
+              <h3>Company</h3>
+              <RiArrowDownSFill />
+            </div>
+            <div className="filters-item">
+              <h3>Contains</h3>
+              <RiArrowDownSFill />
+            </div>
+            <div className="filters-item">
+              <input type="text" placeholder="Type..." />
+            </div>
+          </div>
+          <div className="filters-row">
+            <div className="filters-item">
+              <AiOutlineClose />
+              <h3>Where</h3>
+            </div>
+            <div className="filters-item">
+              <h3>Status</h3>
+              <RiArrowDownSFill />
+            </div>
+            <div className="filters-item">
+              <h3>Is</h3>
+              <RiArrowDownSFill />
+            </div>
+            <div className="filters-item">
+              <input type="text" placeholder="Type..." />
+            </div>
+            <div className="filters-item">
+              <h3>In</h3>
+              <RiArrowDownSFill />
+            </div>
+            <div className="filters-item">
+              <input type="text" placeholder="Entity..." />
+            </div>
+          </div>
+          <div className="filters-row">
+            <div className="filters-item">
+              <AiOutlineClose />
+              <h3>And</h3>
+            </div>
+            <div className="filters-item">
+              <h3>Status</h3>
+              <RiArrowDownSFill />
+            </div>
+            <div className="filters-item">
+              <h3>Ends before</h3>
+              <RiArrowDownSFill />
+            </div>
+            <div className="filters-item">
+              <input type="text" placeholder="Date" />
+            </div>
+            <div className="filters-item">
+              <h3>In</h3>
+              <RiArrowDownSFill />
+            </div>
+            <div className="filters-item">
+              <input type="text" placeholder="Entity..." />
+            </div>
+          </div>
+          <div className="filters-row" style={{ color: "darkblue" }}>
+            <div className="filters-item">
+              <BiPlus style={{ fontSize: "25px" }} />
+              <p style={{ color: "darkblue" }}>Add filter</p>
+            </div>
+            <div className="filters-item">
+              <p>choose property</p>
+              <RiArrowDownSFill />
+            </div>
+          </div>
+        </div>
+      </FiltersOn>
       <div className={displayType.display}>{tiles}</div>
     </EntitiesContainer>
   );

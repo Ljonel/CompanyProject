@@ -37,7 +37,16 @@ const MainPage = () => {
       name: name,
     }));
   };
-
+  const [companyName, setCompanyName] = React.useState({
+    name: "",
+    id: 0,
+  });
+  const handleCompanyName = (name: string, id: number) => {
+    setCompanyName(() => ({
+      name: name,
+      id: id,
+    }));
+  };
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch<GetUsers>(getUsers());
@@ -53,13 +62,17 @@ const MainPage = () => {
           handleIconLink={handleIconLink}
           icon={icon}
           numberOfId={numberOfId}
+          handleCompanyName={handleCompanyName}
         />
         <main>
           <aside>
             <Leftbar handleIconLink={handleIconLink} numberOfId={numberOfId} />
           </aside>
           <section>
-            <PageContent numberOfId={numberOfId} />
+            <PageContent
+              numberOfId={numberOfId}
+              handleCompanyName={handleCompanyName}
+            />
           </section>
         </main>
       </div>

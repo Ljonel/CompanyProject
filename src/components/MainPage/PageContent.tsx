@@ -9,19 +9,19 @@ import EntitiesPage from "../../pages/EntitiesPage";
 import PeoplePage from "../../pages/PeoplePage";
 import ErrorPage from "../../pages/ErrorPage";
 import UserPage from "../../pages/UserPage";
-import WorkspacePage from "../../pages/Workspace";
+import Workspace from "../../pages/Workspace";
 
 export interface PageContentProps {}
 
-const PageContent = ({ numberOfId }) => {
+const PageContent = ({ numberOfId, handleCompanyName }) => {
   const [companyName, setCompanyName] = React.useState({
     name: "",
+    id: 0,
   });
-
-  //change actuall icon in dropdown menu with react state
-  const handleCompanyName = (name: string) => {
+  handleCompanyName = (name: string, id: number) => {
     setCompanyName(() => ({
       name: name,
+      id: id,
     }));
   };
   return (
@@ -45,8 +45,8 @@ const PageContent = ({ numberOfId }) => {
       />
       <Route path="/people" component={PeoplePage} />
       <Route
-        path="/workspace"
-        component={() => <WorkspacePage companyName={companyName} />}
+        path="/workspaces"
+        component={() => <Workspace companyName={companyName} />}
       />
       <Route
         path="/user"

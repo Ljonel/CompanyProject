@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 const WorkElement = styled.div`
   width: 100%;
-  height: 100px;
+  height: 120px;
   margin: 10px 0;
   display: flex;
   flex-direction: column;
@@ -49,12 +49,18 @@ const WorkElement = styled.div`
     }
   }
 `;
-const HomePost = ({ commentsList, photosList, usersList, inputText }) => {
+const HomePost = ({
+  commentsList,
+  followedInPosts,
+  photosList,
+  usersList,
+  inputText,
+}) => {
   //   const userData = usersList.find((user) => user.id === commentsList.id);
   //   const photoData = photosList.find(
   //     (photo) => commentsList.postId === photo.id
   //   );
-  console.log(inputText);
+  // console.log(inputText);
 
   return (
     <>
@@ -63,30 +69,32 @@ const HomePost = ({ commentsList, photosList, usersList, inputText }) => {
         const photoData = photosList.find(
           (photo) => item.postId === photo.albumId
         );
-        if (item.name.toLowerCase().includes(inputText.toLowerCase())) {
-          return (
-            <WorkElement key={item.id}>
-              <div>
-                <h1>{item?.name}</h1>
-                <p>{item?.body}</p>
-                <div className="workElement-icons">
-                  <div className="el">
-                    <img src={photoData?.url} alt="" />
-                    <h3>{userData?.name}</h3>
-                  </div>
-                  &bull;
-                  <div className="el">
-                    <img src="./icons/contract.png" alt="" />
-                    <p>Client Contract</p>
-                  </div>
-                  &bull;
-                  <div className="el">
-                    <p>Updated 3 days ago by {userData?.name} </p>
+        if (followedInPosts.bool === true || item.postId === 1) {
+          if (item.name.toLowerCase().includes(inputText.toLowerCase())) {
+            return (
+              <WorkElement key={item.id}>
+                <div>
+                  <h1>{item?.name}</h1>
+                  <p>{item?.body}</p>
+                  <div className="workElement-icons">
+                    <div className="el">
+                      <img src={photoData?.url} alt="" />
+                      <h3>{userData?.name}</h3>
+                    </div>
+                    &bull;
+                    <div className="el">
+                      <img src="../../icons/contract.png" alt="" />
+                      <p>Client Contract</p>
+                    </div>
+                    &bull;
+                    <div className="el">
+                      <p>Updated 3 days ago by {userData?.name} </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </WorkElement>
-          );
+              </WorkElement>
+            );
+          }
         }
       })}
     </>

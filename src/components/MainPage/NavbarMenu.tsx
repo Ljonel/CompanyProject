@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { IState } from "../../reducers";
 import { IUsersReducer } from "../../reducers/usersReducer";
 import { IPhotosReducer } from "../../reducers/photosReducer";
+import Item from "antd/lib/list/Item";
 //#region styles
 const Menu = styled.div`
   background: #fff;
@@ -121,7 +122,7 @@ const headerMenuOptions: HeaderMenuOptions[] = [
   },
 ];
 
-const NavbarMenu = ({ handleIconLink, numberOfId }) => {
+const NavbarMenu = ({ handleIconLink, numberOfId, handleCompanyName }) => {
   const options = headerMenuOptions.map((item) => {
     return (
       <NavLink
@@ -132,7 +133,7 @@ const NavbarMenu = ({ handleIconLink, numberOfId }) => {
         name={item.name}
       >
         <li>
-          <img src={`./icons/${item.img}`} alt={item.img} />
+          <img src={`../icons/${item.img}`} alt={item.img} />
           <p> {item.name}</p>
         </li>
       </NavLink>
@@ -146,6 +147,24 @@ const NavbarMenu = ({ handleIconLink, numberOfId }) => {
   const { photosList } = useSelector<IState, IPhotosReducer>((global) => ({
     ...global.photos,
   }));
+  const workspacesOptions = usersList.map((item) => {
+    return (
+      <NavLink
+        key={item.id}
+        onClick={() => handleCompanyName(item.company.name, item.id)}
+        to={`workspaces/${item.id}`}
+      >
+        <li>
+          <img
+            style={{ width: "20px" }}
+            src={photosList?.[item.id]?.url}
+            alt=""
+          />
+          <p>Client Contract</p>
+        </li>
+      </NavLink>
+    );
+  });
 
   const [inputText, setInputText] = useState<string>("");
   const inputHandle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -170,33 +189,16 @@ const NavbarMenu = ({ handleIconLink, numberOfId }) => {
         {/* <ul>{options}</ul> */}
         {options.map((item) => {
           if (item.props.name.toLowerCase().includes(inputText.toLowerCase())) {
-            return <ul>{item}</ul>;
+            return <span key={item.key}>{item}</span>;
           }
         })}
 
-        <span>Workspaces</span>
-        <ul>
-          <li>
-            <img src="./icons/contractlow.png" alt="" />
-            <p>Client contract</p>
-          </li>
-          <li>
-            <img src="./icons/contractlow.png" alt="" />
-            <p>Supplier contract</p>
-          </li>
-          <li>
-            <img src="./icons/entities2.png" alt="" />
-            <p>Corporate</p>
-          </li>
-          <li>
-            <img src="./icons/contractlow.png" alt="" />
-            <p>Group Norms</p>
-          </li>
-          <li>
-            <img src="./icons/contractlow.png" alt="" />
-            <p>Real estate contracts</p>
-          </li>
-        </ul>
+        <div style={{ height: "200px", overflowY: "scroll" }}>
+          <span>Workspaces</span>
+          {workspacesOptions.map((item) => {
+            return item;
+          })}
+        </div>
         <hr />
         <span>Account</span>
         <div className="menu-account">
@@ -210,7 +212,7 @@ const NavbarMenu = ({ handleIconLink, numberOfId }) => {
               />
               <div className="navbarmenu-avatar">
                 <p>{usersList?.[numberOfId]?.name}</p>
-                <a href="index.html">See profile</a>
+                <div>See profile</div>
               </div>
             </NavLink>
             <li>

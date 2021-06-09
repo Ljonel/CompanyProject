@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export interface EcosystemPageProps {}
 
-const EcosystemPage = (handleIconLink) => {
+const EcosystemPage = () => {
   return (
     <div>
       <h1>Ecosystem Page</h1>

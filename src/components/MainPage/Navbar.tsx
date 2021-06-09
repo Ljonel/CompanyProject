@@ -130,7 +130,7 @@ const HeaderIcons = styled.div`
 `;
 //#endregion
 
-const Navbar = ({ icon, handleIconLink, numberOfId }) => {
+const Navbar = ({ icon, handleIconLink, numberOfId, handleCompanyName }) => {
   const [wrapperRef, dropdownOpen, toggleDropdown, closeDropdown] =
     useDropdown();
 
@@ -156,6 +156,7 @@ const Navbar = ({ icon, handleIconLink, numberOfId }) => {
           {dropdownOpen && (
             <NavbarMenu
               handleIconLink={handleIconLink}
+              handleCompanyName={handleCompanyName}
               numberOfId={numberOfId}
             />
           )}

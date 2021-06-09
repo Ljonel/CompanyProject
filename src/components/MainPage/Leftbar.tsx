@@ -119,7 +119,7 @@ const Leftbar = ({ handleIconLink, numberOfId }) => {
   const { photosList } = useSelector<IState, IPhotosReducer>((global) => ({
     ...global.photos,
   }));
-  console.log(numberOfId);
+  // console.log(numberOfId);
 
   return (
     <LeftbarWrapper className="leftbar-wrapper">
