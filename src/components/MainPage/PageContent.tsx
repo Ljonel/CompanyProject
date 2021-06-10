@@ -13,17 +13,18 @@ import Workspace from "../../pages/Workspace";
 
 export interface PageContentProps {}
 
-const PageContent = ({ numberOfId, handleCompanyName }) => {
-  const [companyName, setCompanyName] = React.useState({
-    name: "",
-    id: 0,
-  });
-  handleCompanyName = (name: string, id: number) => {
-    setCompanyName(() => ({
-      name: name,
-      id: id,
-    }));
-  };
+const PageContent = ({ numberOfId, handleCompanyName, companyName }) => {
+  // const [companyName, setCompanyName] = React.useState({
+  //   name: "",
+  //   id: 0,
+  // });
+  // handleCompanyName = (name: string, id: number) => {
+  //   setCompanyName(() => ({
+  //     name: name,
+  //     id: id,
+  //   }));
+  // };
+
   return (
     <Switch>
       <Route

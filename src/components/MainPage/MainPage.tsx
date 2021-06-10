@@ -47,6 +47,7 @@ const MainPage = () => {
       id: id,
     }));
   };
+  console.log(companyName);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch<GetUsers>(getUsers());
@@ -72,6 +73,7 @@ const MainPage = () => {
             <PageContent
               numberOfId={numberOfId}
               handleCompanyName={handleCompanyName}
+              companyName={companyName}
             />
           </section>
         </main>

@@ -470,12 +470,6 @@ const UserPage = ({ numberOfId }) => {
 
   const formikTable = useFormik({
     initialValues: {
-      // name: ["operation"],
-      // entity: ["Renault"],
-      // location: ["France"],
-      // expertise: ["#Tax"],
-      // date: ["24/01"],
-      // firm: ["Racine"],
       rowone: {
         name: ["operation"],
         entity: ["Renault"],

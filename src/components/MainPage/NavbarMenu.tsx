@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IState } from "../../reducers";
 import { IUsersReducer } from "../../reducers/usersReducer";
@@ -149,10 +149,10 @@ const NavbarMenu = ({ handleIconLink, numberOfId, handleCompanyName }) => {
   }));
   const workspacesOptions = usersList.map((item) => {
     return (
-      <NavLink
+      <Link
         key={item.id}
         onClick={() => handleCompanyName(item.company.name, item.id)}
-        to={`workspaces/${item.id}`}
+        to={`/workspaces/${item.id}`}
       >
         <li>
           <img
@@ -162,7 +162,7 @@ const NavbarMenu = ({ handleIconLink, numberOfId, handleCompanyName }) => {
           />
           <p>Client Contract</p>
         </li>
-      </NavLink>
+      </Link>
     );
   });
 
